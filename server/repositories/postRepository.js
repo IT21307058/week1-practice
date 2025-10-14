@@ -27,6 +27,10 @@ class PostRepository {
     async getFileById(fileId) {
         return await File.findById(fileId);
     }
+
+    async deleteFile(fileId) {
+        return await File.findByIdAndDelete(fileId);
+    }
 }
 
 module.exports = new PostRepository();

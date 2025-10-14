@@ -15,7 +15,7 @@ class PostService {
     }
 
     async getAllPosts() {
-        const posts =  await postRepository.getAllPosts();
+        const posts = await postRepository.getAllPosts();
 
         const postsWithFiles = await Promise.all(
             posts.map(async (post) => {
@@ -45,6 +45,33 @@ class PostService {
         );
 
         return postsWithFiles;
+    }
+
+    async deletePost(id) {
+        const post = await postRepository.getPostById(id);
+
+        if (!post) {
+            throw new Error('Post not found');
+        }
+
+        const fileId = post.fileUrl.split('/files/')[1];
+
+        if (fileId) {
+            try {
+                await postRepository.deleteFile(fileId);
+                console.log(`File ${fileId} deleted successfully`);
+            } catch (err) {
+                console.error(`Error deleting file ${fileId}:`, err);
+            }
+        }
+
+        const result = await postRepository.deletePost(id);
+
+        if (result === 0) {
+            throw new Error('Post not found');
+        }
+
+        return { message: 'Post and file deleted successfully' };
     }
 }
 

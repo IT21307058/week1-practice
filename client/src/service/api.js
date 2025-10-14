@@ -17,3 +17,12 @@ export const fetchPostData = async (date) => {
     throw error;
   }
 };
+
+
+export const deletePost = async (postId) => {
+  const response = await fetch(`http://localhost:5000/posts/${postId}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Failed to delete post');
+  return response.json();
+};
