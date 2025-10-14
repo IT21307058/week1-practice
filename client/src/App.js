@@ -8,15 +8,8 @@ import Home from "./pages/Home";
 // import Login from "./pages/Login";
 // import Register from "./pages/Register";
 import { ToastContextProvider } from "./context/ToastContext";
-// import Footer from "./components/Footer";
-// import Header from "./components/Header";
-// import FetchApodDataPage from "./pages/apod/FetchApodDataPage.js";
-// import FetchApodSpecificDateRange from "./pages/apod/FetchApodSpecificDateRange.js";
-// import FetchApodRandom from "./pages/apod/FetchApodRandom.js";
-// import FetchMarsRoverPhotos from "./pages/marsrovers/FetchMarsRoverPhotos.js"
-// import FetchMarsRoverPhotosDate from "./pages/marsrovers/FetchMarsRoverPhotosDate.js";
-// import FetchMissionManifestData from "./pages/marsrovers/FetchMissionManifestData.js";
-// import { Helmet } from "react-helmet"
+import AddPost from "./pages/AddPost";
+
 
 function App() {
   return (
@@ -31,14 +24,7 @@ function App() {
             <Layout>
               <Switch>
                 <Route path="/" element={<Home />} />
-                {/* <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/apod" element={<FetchApodDataPage />} />
-                <Route path="/apodrange" element={<FetchApodSpecificDateRange />} />
-                <Route path="/apodrandom" element={<FetchApodRandom />} />
-                <Route path="/marssol" element={<FetchMarsRoverPhotos />} />
-                <Route path="/marsearthdate" element={<FetchMarsRoverPhotosDate />} />
-                <Route path="/marsmanifestdata" element={<FetchMissionManifestData />} /> */}
+                <Route path="/add-post" element={<AddPost />} />
 
               </Switch>
             </Layout>

@@ -31,6 +31,10 @@ class PostRepository {
     async deleteFile(fileId) {
         return await File.findByIdAndDelete(fileId);
     }
+
+    async deletePostById(id) {
+        return await Post.destroy({ where: { id } });
+    }
 }
 
 module.exports = new PostRepository();

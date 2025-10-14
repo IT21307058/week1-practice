@@ -65,7 +65,7 @@ class PostService {
             }
         }
 
-        const result = await postRepository.deletePost(id);
+        const result = await postRepository.deletePostById(id);
 
         if (result === 0) {
             throw new Error('Post not found');

@@ -20,9 +20,19 @@ export const fetchPostData = async (date) => {
 
 
 export const deletePost = async (postId) => {
+  console.log("Deleting post with ID:", postId);
   const response = await fetch(`http://localhost:5000/posts/${postId}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete post');
+  return response.json();
+};
+
+export const createPost = async (formData) => {
+  const response = await fetch('http://localhost:5000/posts/upload', {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) throw new Error('Failed to create post');
   return response.json();
 };

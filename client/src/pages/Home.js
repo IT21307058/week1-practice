@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 import { fetchPostData, deletePost } from "../service/api";
 import FilePreview from "../components/FilePreview";
+import { useNavigate } from "react-router-dom";
 
 const fmt = (v) => (v ? new Date(v).toLocaleString() : "-");
 
 const Home = () => {
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,8 @@ const Home = () => {
       return;
     }
 
+    console.log("Deleting post with IDrfff:", postId);
+
     try {
       setDeleting(postId);
       await deletePost(postId);
@@ -49,7 +53,16 @@ const Home = () => {
   return (
     <>
       <div className="container py-4">
-        <h1 className="mb-4">All Posts</h1>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="mb-0">All Posts</h1>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate("/add-post")}
+          >
+            <i className="bi bi-plus-circle me-2"></i>
+            Add New Post
+          </button>
+        </div>
 
         <table className="table table-striped table-bordered">
           <thead className="thead-dark">
