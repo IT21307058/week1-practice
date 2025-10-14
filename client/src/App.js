@@ -13,9 +13,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <Router>
-      {/* <Helmet>
-        <title>NASA</title>
-      </Helmet> */}
       <div style={{ minHeight: "90vh", margin: "0px", padding: "0px" }}>
         <ToastContextProvider>
           <Layout>
