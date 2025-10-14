@@ -1,108 +1,112 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-
-import AuthContext from "../context/AuthContext";
-// import ToastContext from "../context/ToastContext";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { saveToken } from "../helper/token";
+import { login } from "../service/authApi";
 
 const Login = () => {
-  // const { toast } = useContext(ToastContext);
-  const { loginUser } = useContext(AuthContext);
-
-  const [credentials, setCredentials] = useState({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-
-    //spreading the previous state with the new state
-    setCredentials({ ...credentials, [name]: value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); //prevents the page from reloading/refreshing
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    if (!credentials.email || !credentials.password) {
-      // toast.error("Please enter all the required fields!");
+    if (!formData.email || !formData.password) {
+      setError("All fields are required");
       return;
     }
 
-    loginUser(credentials);
+    try {
+      setLoading(true);
+      const result = await login(formData.email, formData.password);
+      
+      // Save token
+      saveToken(result.token);
+      
+      // Redirect to home
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  var button = document.getElementById("mainButton");
-
-  // var openForm = function () {
-  //   button.className = "active";
-  // };
-
   return (
-    <>
-      <div className="background">
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-          <img
-            src="https://cdn.worldvectorlogo.com/logos/nasa-6.svg"
-            className="rounded-circle mr-2"
-            width="90"
-            height="90"
-          />
-          <h3 className="text-center">Login</h3>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-12 col-md-6">
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="emailInput" className="form-label mt-4">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="emailInput"
-                  aria-describedby="emailHelp"
-                  name="email"
-                  value={credentials.email}
-                  onChange={handleInputChange}
-                  placeholder="Email"
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="passwordInput" className="form-label mt-4">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="passwordInput"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter Password"
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <center>
-                <input
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6 col-lg-4">
+          <div className="card shadow">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4">Login</h2>
+
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <div className="form-group mb-3">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <div className="form-group mb-3">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter your password"
+                    required
+                  />
+                </div>
+
+                <button
                   type="submit"
-                  value="Login"
-                  className="btn btn-danger"
-                  style={{ marginTop: "20px" }}
-                />
-              </center>
-              <p>
-                Don't have an account? <Link to="/register" style={{color:"blue"}}>Create One</Link>
-              </p>
-            </form>
+                  className="btn btn-primary w-100 mb-3"
+                  disabled={loading}
+                >
+                  {loading ? "Logging in..." : "Login"}
+                </button>
+
+                <p className="text-center mb-0">
+                  Don't have an account?{" "}
+                  <Link to="/register">Register here</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-//We need to export the component so that we can import it in other files
 export default Login;

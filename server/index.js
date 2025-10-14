@@ -6,6 +6,7 @@ const { sequelize, connectDB } = require("./db/db");
 const errorHandler = require("./middlewares/errorhandler");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 //routes
-app.use("/api/users", userRoutes);
+app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);
 
 app.use("/api/products", (req, res) => {

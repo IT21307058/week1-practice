@@ -1,168 +1,155 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-
-import AuthContext from "../context/AuthContext";
-import ToastContext from "../context/ToastContext";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { saveToken } from "../helper/token";
+import { register } from "../service/authApi";
 
 const Register = () => {
-  const { toast } = useContext(ToastContext);
-  const { registerUser } = useContext(AuthContext);
-
-  const [credentials, setCredentials] = useState({
-    name: "",
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-
-    //spreading the previous state with the new state
-    setCredentials({ ...credentials, [name]: value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); //prevents the page from reloading/refreshing
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    // console.log(credentials);
-
-    if (
-      !credentials.email ||
-      !credentials.password ||
-      !credentials.confirmPassword ||
-      !credentials.role
-    ) {
-      toast.error("Please enter all the required fields!");
+    // Validation
+    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError("All fields are required");
       return;
     }
 
-    //check if the password and confirm password match
-    if (credentials.password !== credentials.confirmPassword) {
-      toast.error("password do not match");
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
     }
-    const userData = { ...credentials, confirmPassword: undefined };
-    registerUser(userData);
-  };
-  return (
-    <>
-      <div className="background">
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <img
-            src="https://cdn.worldvectorlogo.com/logos/nasa-6.svg"
-            className="rounded-circle mr-2"
-            width="90"
-            height="90"
-          />
-          <h3 className="text-center">Create your account</h3>
-        </div>
 
-        <div className="row justify-content-center">
-          <div className="col-12 col-md-6">
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="nameInput" className="form-label mt-4">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="nameInput"
-                  name="name"
-                  value={credentials.name}
-                  onChange={handleInputChange}
-                  placeholder="Bhanuka Lakshitha Dayananda"
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="emailInput" className="form-label mt-4">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="emailInput"
-                  aria-describedby="emailHelp"
-                  name="email"
-                  value={credentials.email}
-                  onChange={handleInputChange}
-                  placeholder="bhanukalakshitha@gmail.com"
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="passwordInput" className="form-label mt-4">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="passwordInput"
-                  name="password"
-                  value={credentials.password}
-                  placeholder="Enter Password"
-                  onChange={handleInputChange}
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword" className="form-label mt-4">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={credentials.confirmPassword}
-                  placeholder="Confirm Password"
-                  onChange={handleInputChange}
-                  required
-                  fdprocessedid="8n2of"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="roleInput" className="form-label mt-4">
-                  Role
-                </label>
-                <div className="select-wrapper">
-                  <select
-                    className="form-select"
-                    id="roleInput"
-                    name="role"
-                    value={credentials.role}
-                    onChange={handleInputChange}
-                    placeholder="Student"
-                    required
-                    fdprocessedid="8n2of"
-                  >
-                    <option value="">Select Role</option>
-                    <option value="Student">Student</option>
-                  </select>
-                  {/* <div className="select-arrow">&#9660;</div> */}
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await register(formData.username, formData.email, formData.password);
+
+      // Save token
+      saveToken(result.token);
+
+      // Redirect to home
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6 col-lg-5">
+          <div className="card shadow">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4">Register</h2>
+
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
                 </div>
-              </div>
-              <center>
-                <input
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <div className="form-group mb-3">
+                  <label htmlFor="username">Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    placeholder="Choose a username"
+                    required
+                  />
+                </div>
+
+                <div className="form-group mb-3">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <div className="form-group mb-3">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Create a password"
+                    required
+                  />
+                  <small className="form-text text-muted">
+                    Must be at least 6 characters
+                  </small>
+                </div>
+
+                <div className="form-group mb-3">
+                  <label htmlFor="confirmPassword">Confirm Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+
+                <button
                   type="submit"
-                  value="Register"
-                  className="btn btn-danger"
-                  style={{ marginTop: "20px" }}
-                ></input>
-              </center>
-              <p>
-                Already have an account? <Link to="/login" style={{color:"blue"}}>Login</Link>
-              </p>
-            </form>
+                  className="btn btn-primary w-100 mb-3"
+                  disabled={loading}
+                >
+                  {loading ? "Creating account..." : "Register"}
+                </button>
+
+                <p className="text-center mb-0">
+                  Already have an account?{" "}
+                  <Link to="/login">Login here</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
