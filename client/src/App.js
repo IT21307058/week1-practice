@@ -2,8 +2,6 @@ import { Routes as Switch, Route, Routes } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import Layout from "./components/Layout";
 
-// import { AuthContextProvider } from "./context/AuthContext";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,8 +18,6 @@ function App() {
       </Helmet> */}
       <div style={{ minHeight: "90vh", margin: "0px", padding: "0px" }}>
         <ToastContextProvider>
-          {/* <AuthContextProvider> */}
-          {/* <Header /> */}
           <Layout>
             <Switch>
 
@@ -40,7 +36,6 @@ function App() {
 
             </Switch>
           </Layout>
-          {/* </AuthContextProvider> */}
         </ToastContextProvider>
       </div>
     </Router>
