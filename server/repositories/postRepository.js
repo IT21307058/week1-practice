@@ -23,6 +23,10 @@ class PostRepository {
     async getAllPosts() {
         return await Post.findAll();
     }
+
+    async getFileById(fileId) {
+        return await File.findById(fileId);
+    }
 }
 
 module.exports = new PostRepository();

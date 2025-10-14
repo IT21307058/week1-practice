@@ -22,6 +22,8 @@ class PostController {
     async getPosts(req, res) {
         try {
             const posts = await postService.getAllPosts();
+
+            console.log("Posts", posts)
             res.json(posts);
         } catch (err) {
             console.error(err);
