@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - "routes/**"
-      - "controllers/**"
-      - "validators/**"
-      - "scripts/**"
-      - "contracts/**"
-      - "docs/**"
+      - "server/routes/**"
+      - "server/controllers/**"
+      - "server/validators/**"
+      - "server/scripts/**"
+      - "server/contracts/**"
+      - "server/docs/**"
 
 jobs:
   docs:
