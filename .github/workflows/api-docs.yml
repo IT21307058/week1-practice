@@ -1,21 +1,18 @@
-# .github/workflows/api-docs.yml
-# Runs on PRs. Fails if contracts/swagger.json are not committed (blocks merge when required checks are enabled)
 name: API Docs Check
 
 on:
   pull_request:
     branches: ["main"]
-    paths:
-      - "server/routes/**"
-      - "server/controllers/**"
-      - "server/validators/**"
-      - "server/scripts/**"
-      - "server/contracts/**"
-      - "server/docs/**"
+
+  workflow_dispatch:
 
 jobs:
   docs:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
     steps:
       - uses: actions/checkout@v4
 
