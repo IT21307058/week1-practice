@@ -1,0 +1,113 @@
+{
+  "id": "registerUser",
+  "method": "post",
+  "path": "/auth/register",
+  "summary": "Register a new user account.",
+  "tags": [
+    "Authentication"
+  ],
+  "security": [],
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": [
+            "username",
+            "email",
+            "password"
+          ],
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "Unique username for the new account."
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "Unique email address for the new account."
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "description": "Password for the new account. Should be at least 8 characters long."
+            }
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "201": {
+      "description": "User registered successfully.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "User registered successfully."
+              },
+              "token": {
+                "type": "string",
+                "description": "JWT token for the newly registered user, allowing immediate authentication."
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "6543210fedcba9876543210f"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "newUser123"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "new.user@example.com"
+                  }
+                },
+                "description": "Details of the newly registered user."
+              }
+            }
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "Bad Request. Invalid input data or user already exists.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Email already in use."
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "example": "email"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email is not valid."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

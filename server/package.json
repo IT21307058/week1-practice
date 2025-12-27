@@ -4,13 +4,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "docs:contracts": "node scripts/generate-contracts.mjs",
+    "docs:swagger": "node scripts/generate-swagger-from-contracts.mjs",
+    "docs:all": "npm run docs:contracts && npm run docs:swagger"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/genai": "^1.34.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -21,6 +25,7 @@
     "mysql2": "^3.15.2",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }

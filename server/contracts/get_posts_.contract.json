@@ -1,0 +1,78 @@
+{
+  "id": "getPosts",
+  "method": "get",
+  "path": "/posts/",
+  "summary": "Retrieve a list of all posts.",
+  "tags": [
+    "Posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "A list of posts retrieved successfully.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier of the post."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title of the post."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Full content of the post."
+                },
+                "authorId": {
+                  "type": "string",
+                  "description": "ID of the user who authored the post."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Timestamp when the post was created."
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Timestamp when the post was last updated."
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "content",
+                "authorId",
+                "createdAt",
+                "updatedAt"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal Server Error.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Failed to retrieve posts due to a server error."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

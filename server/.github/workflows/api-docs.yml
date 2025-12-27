@@ -1,0 +1,39 @@
+# .github/workflows/api-docs.yml
+# Runs on PRs. Fails if contracts/swagger.json are not committed (blocks merge when required checks are enabled)
+name: API Docs Check
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "routes/**"
+      - "controllers/**"
+      - "validators/**"
+      - "scripts/**"
+      - "contracts/**"
+      - "docs/**"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      - name: Generate docs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm run docs:all
+
+      - name: Fail if docs are not committed
+        run: |
+          if [[ -n "$(git status --porcelain contracts docs/swagger.json)" ]]; then
+            echo "Docs are out of date. Run npm run docs:all and commit contracts + docs/swagger.json"
+            git status --porcelain contracts docs/swagger.json
+            exit 1
+          fi

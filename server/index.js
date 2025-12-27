@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const swaggerUi = require("swagger-ui-express");
+const fs = require("fs");
+const path = require("path");
 
 const { sequelize, connectDB } = require("./db/db");
 const errorHandler = require("./middlewares/errorhandler");
@@ -17,6 +20,7 @@ app.use(express.json());
 //routes
 app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);
+app.use('/users', userRoutes);
 
 app.use("/api/products", (req, res) => {
   return res.status(200).json({
@@ -26,6 +30,13 @@ app.use("/api/products", (req, res) => {
 
 //error handler
 app.use(errorHandler);
+
+const swaggerPath = path.join(__dirname, "docs", "swagger.json");
+const swaggerDoc = fs.existsSync(swaggerPath)
+  ? JSON.parse(fs.readFileSync(swaggerPath, "utf8"))
+  : { openapi: "3.0.0", info: { title: "API", version: "1.0.0" }, paths: {} };
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 (async () => {
   try {

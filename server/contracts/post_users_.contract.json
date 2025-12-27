@@ -1,0 +1,123 @@
+{
+  "id": "createNewUser",
+  "method": "post",
+  "path": "/users/",
+  "summary": "Create a new user account.",
+  "tags": [
+    "Users"
+  ],
+  "security": [],
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": [
+            "username",
+            "email",
+            "password"
+          ],
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "The desired username for the new account.",
+              "example": "john_doe"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "The email address for the new account. Must be unique.",
+              "example": "john.doe@example.com"
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "description": "The password for the new account. Minimum 8 characters.",
+              "minLength": 8,
+              "example": "mySecretPassword123"
+            }
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "201": {
+      "description": "User created successfully.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "success"
+                ],
+                "example": "success"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The unique identifier of the newly created user.",
+                        "example": "65e6d2b3c7f9a1e0d4c8b5a6"
+                      },
+                      "username": {
+                        "type": "string",
+                        "description": "The username of the new user.",
+                        "example": "john_doe"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "The email of the new user.",
+                        "example": "john.doe@example.com"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the user account was created.",
+                        "example": "2023-10-27T10:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "Bad Request. Invalid input data or missing required fields.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "fail",
+                  "error"
+                ],
+                "example": "fail"
+              },
+              "message": {
+                "type": "string",
+                "description": "Description of the error.",
+                "example": "Email is already in use."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
