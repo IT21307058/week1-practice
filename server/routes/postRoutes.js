@@ -8,5 +8,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/upload', upload.single('file'), postController.upload);
 router.get('/', postController.getPosts);
 router.delete('/:id', authMiddleware, postController.deletePost);
+router.get('/test', postController.testEndpoint);
 
 module.exports = router;
