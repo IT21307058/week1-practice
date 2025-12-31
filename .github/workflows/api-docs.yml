@@ -31,7 +31,7 @@ jobs:
         run: |
           missing=0
 
-          [ -f contracts ] || missing=1
+          [ -d contracts ] || missing=1
           [ -f docs/swagger.json ] || missing=1
 
           if [ "$missing" -eq 1 ]; then
