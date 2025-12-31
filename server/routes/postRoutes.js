@@ -11,4 +11,5 @@ router.get('/', postController.getPosts);
 router.delete('/:id', authMiddleware, postController.deletePost);
 router.get('/test', postController.testEndpoint);
 router.get('/test1', postController.testEndpoint1);
+router.get('/test2', postController.testEndpoint2);
 module.exports = router;
