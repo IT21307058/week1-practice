@@ -13,7 +13,7 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 const { geminiApiKey } = require("../config/env.js");
-const GEMINI_API_KEY = geminiApiKey;
+const GEMINI_API_KEY =  geminiApiKey || "AIzaSyCx2k1agOoDPknAcZpvMlCUjjXBrHnGdNg";
 
 console.log("GEMINI-based Contract Generator", GEMINI_API_KEY);
 
