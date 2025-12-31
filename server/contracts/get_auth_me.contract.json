@@ -2,9 +2,10 @@
   "id": "getMe",
   "method": "get",
   "path": "/auth/me",
-  "summary": "Retrieve the profile of the currently authenticated user.",
+  "summary": "Retrieve details of the authenticated user",
   "tags": [
-    "Authentication"
+    "Authentication",
+    "Users"
   ],
   "security": [
     "bearerAuth"
@@ -12,7 +13,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Successfully retrieved user profile.",
+      "description": "User details retrieved successfully",
       "content": {
         "application/json": {
           "schema": {
@@ -21,32 +22,32 @@
               "id": {
                 "type": "string",
                 "format": "uuid",
-                "description": "Unique identifier of the user."
+                "description": "Unique identifier of the user"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the user"
               },
               "email": {
                 "type": "string",
                 "format": "email",
-                "description": "Email address of the user."
-              },
-              "name": {
-                "type": "string",
-                "description": "Full name or username of the user."
+                "description": "Email address of the user"
               },
               "createdAt": {
                 "type": "string",
                 "format": "date-time",
-                "description": "Timestamp when the user account was created."
+                "description": "Timestamp when the user account was created"
               },
               "updatedAt": {
                 "type": "string",
                 "format": "date-time",
-                "description": "Timestamp when the user account was last updated."
+                "description": "Timestamp when the user account was last updated"
               }
             },
             "required": [
               "id",
-              "email",
               "name",
+              "email",
               "createdAt",
               "updatedAt"
             ]
@@ -55,7 +56,7 @@
       }
     },
     "401": {
-      "description": "Unauthorized - No authentication token provided or token is invalid.",
+      "description": "Unauthorized - Authentication required or invalid token",
       "content": {
         "application/json": {
           "schema": {
@@ -70,8 +71,8 @@
         }
       }
     },
-    "500": {
-      "description": "Internal server error.",
+    "404": {
+      "description": "User not found (e.g., if the authenticated user ID does not correspond to an existing user)",
       "content": {
         "application/json": {
           "schema": {
@@ -79,7 +80,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Internal Server Error"
+                "example": "User not found"
               }
             }
           }

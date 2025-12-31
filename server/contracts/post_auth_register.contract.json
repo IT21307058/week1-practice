@@ -1,5 +1,5 @@
 {
-  "id": "registerUser",
+  "id": "register",
   "method": "post",
   "path": "/auth/register",
   "summary": "Register a new user account",
@@ -14,25 +14,27 @@
         "schema": {
           "type": "object",
           "required": [
-            "name",
             "email",
             "password"
           ],
           "properties": {
-            "name": {
-              "type": "string",
-              "description": "The user's full name."
-            },
             "email": {
               "type": "string",
               "format": "email",
-              "description": "The user's email address. Must be unique."
+              "description": "The user's email address.",
+              "example": "user@example.com"
             },
             "password": {
               "type": "string",
               "format": "password",
-              "minLength": 8,
-              "description": "The user's password. Should be at least 8 characters long."
+              "description": "The user's chosen password.",
+              "minLength": 6,
+              "example": "MyStrongPassword123"
+            },
+            "name": {
+              "type": "string",
+              "description": "The user's full name (optional).",
+              "example": "John Doe"
             }
           }
         }
@@ -49,24 +51,23 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "User registered successfully."
+                "example": "User registered successfully!"
               },
               "user": {
                 "type": "object",
                 "properties": {
                   "id": {
                     "type": "string",
-                    "format": "uuid",
-                    "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "John Doe"
+                    "example": "6543210fedcba98765432109"
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "example": "john.doe@example.com"
+                    "example": "user@example.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
                   },
                   "createdAt": {
                     "type": "string",
@@ -74,11 +75,6 @@
                     "example": "2023-10-27T10:00:00.000Z"
                   }
                 }
-              },
-              "token": {
-                "type": "string",
-                "description": "Authentication token for the newly registered user.",
-                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
               }
             }
           }
@@ -86,7 +82,7 @@
       }
     },
     "400": {
-      "description": "Bad Request - Invalid input or email already registered.",
+      "description": "Bad Request - Invalid input or missing required fields.",
       "content": {
         "application/json": {
           "schema": {
@@ -94,7 +90,23 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Email address already in use."
+                "example": "Email and password are required."
+              }
+            }
+          }
+        }
+      }
+    },
+    "409": {
+      "description": "Conflict - User with this email already exists.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "User with 'user@example.com' already exists."
               }
             }
           }

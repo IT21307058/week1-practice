@@ -2,7 +2,7 @@
   "id": "createNewUser",
   "method": "post",
   "path": "/users/",
-  "summary": "Create a new user account.",
+  "summary": "Create a new user",
   "tags": [
     "Users"
   ],
@@ -10,24 +10,31 @@
   "requestBody": null,
   "responses": {
     "201": {
-      "description": "User created successfully.",
+      "description": "User created successfully. Returns the ID of the newly created user.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
+              "id": {
+                "type": "string",
+                "description": "The unique identifier of the newly created user."
+              },
               "message": {
                 "type": "string",
-                "description": "A confirmation message.",
-                "example": "User created successfully."
+                "description": "Success message."
               }
-            }
+            },
+            "required": [
+              "id",
+              "message"
+            ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request - Invalid input data.",
+      "description": "Bad Request. The request body or parameters are invalid.",
       "content": {
         "application/json": {
           "schema": {
@@ -35,27 +42,12 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "Details about the bad request.",
-                "example": "Invalid input data provided."
+                "description": "Error message explaining the reason for the bad request."
               }
-            }
-          }
-        }
-      }
-    },
-    "500": {
-      "description": "Internal Server Error.",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "description": "An unexpected error occurred.",
-                "example": "An unexpected error occurred on the server."
-              }
-            }
+            },
+            "required": [
+              "message"
+            ]
           }
         }
       }

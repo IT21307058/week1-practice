@@ -1,8 +1,8 @@
 {
-  "id": "login",
+  "id": "loginUser",
   "method": "post",
   "path": "/auth/login",
-  "summary": "Authenticate user and issue an access token.",
+  "summary": "Logs in a user and returns an authentication token.",
   "tags": [
     "Auth"
   ],
@@ -21,12 +21,12 @@
             "email": {
               "type": "string",
               "format": "email",
-              "description": "User's email address."
+              "description": "The user's email address."
             },
             "password": {
               "type": "string",
               "format": "password",
-              "description": "User's password."
+              "description": "The user's password."
             }
           }
         }
@@ -35,12 +35,16 @@
   },
   "responses": {
     "200": {
-      "description": "User logged in successfully.",
+      "description": "Login successful. Returns an authentication token and user information.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "example": "success"
+              },
               "token": {
                 "type": "string",
                 "description": "JWT authentication token."
@@ -50,19 +54,15 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "User's unique ID."
+                    "format": "uuid",
+                    "description": "The ID of the logged-in user."
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "User's email address."
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "User's full name."
+                    "description": "The email of the logged-in user."
                   }
-                },
-                "description": "Details of the logged-in user."
+                }
               }
             }
           }
@@ -70,12 +70,16 @@
       }
     },
     "400": {
-      "description": "Bad Request. Missing required fields or invalid input format.",
+      "description": "Bad Request. Missing required fields in the request body.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "example": "fail"
+              },
               "message": {
                 "type": "string",
                 "example": "Email and password are required."
@@ -92,9 +96,13 @@
           "schema": {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "example": "fail"
+              },
               "message": {
                 "type": "string",
-                "example": "Invalid credentials."
+                "example": "Invalid email or password."
               }
             }
           }

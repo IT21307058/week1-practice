@@ -2,7 +2,7 @@
   "id": "deletePost",
   "method": "delete",
   "path": "/posts/{id}",
-  "summary": "Delete a post by ID",
+  "summary": "Deletes a specific post by its ID.",
   "tags": [
     "Posts"
   ],
@@ -12,7 +12,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Post deleted successfully",
+      "description": "Post successfully deleted.",
       "content": {
         "application/json": {
           "schema": {
@@ -20,7 +20,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Post deleted successfully"
+                "example": "Post deleted successfully."
               }
             }
           }
@@ -28,7 +28,7 @@
       }
     },
     "401": {
-      "description": "Unauthorized: Authentication required",
+      "description": "Unauthorized - Authentication token is missing or invalid.",
       "content": {
         "application/json": {
           "schema": {
@@ -36,23 +36,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Authentication required"
-              }
-            }
-          }
-        }
-      }
-    },
-    "403": {
-      "description": "Forbidden: You do not have permission to delete this post",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "example": "Forbidden: You do not have permission to delete this post"
+                "example": "Unauthorized"
               }
             }
           }
@@ -60,7 +44,7 @@
       }
     },
     "404": {
-      "description": "Post not found",
+      "description": "Post not found.",
       "content": {
         "application/json": {
           "schema": {
@@ -69,6 +53,22 @@
               "message": {
                 "type": "string",
                 "example": "Post not found"
+              }
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal Server Error.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Internal Server Error"
               }
             }
           }

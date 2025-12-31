@@ -2,7 +2,7 @@
   "id": "getPosts",
   "method": "get",
   "path": "/posts/",
-  "summary": "Retrieve a list of all posts",
+  "summary": "Retrieve a list of all posts.",
   "tags": [
     "Posts"
   ],
@@ -10,7 +10,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Successfully retrieved a list of posts.",
+      "description": "A list of posts retrieved successfully.",
       "content": {
         "application/json": {
           "schema": {
@@ -20,7 +20,8 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "description": "The unique identifier of the post."
+                  "format": "uuid",
+                  "description": "Unique identifier of the post."
                 },
                 "title": {
                   "type": "string",
@@ -32,17 +33,18 @@
                 },
                 "authorId": {
                   "type": "string",
+                  "format": "uuid",
                   "description": "The ID of the user who authored the post."
                 },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "The timestamp when the post was created."
+                  "description": "Timestamp when the post was created."
                 },
                 "updatedAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "The timestamp when the post was last updated."
+                  "description": "Timestamp when the post was last updated."
                 }
               },
               "required": [
@@ -67,9 +69,12 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "A descriptive error message."
+                "description": "Error message indicating what went wrong."
               }
-            }
+            },
+            "required": [
+              "message"
+            ]
           }
         }
       }

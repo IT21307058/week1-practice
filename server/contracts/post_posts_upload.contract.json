@@ -2,15 +2,34 @@
   "id": "uploadPost",
   "method": "post",
   "path": "/posts/upload",
-  "summary": "Uploads a single file (e.g., an image or document) to the server.",
+  "summary": "Upload a new post with an associated file.",
   "tags": [
     "Posts"
   ],
   "security": [],
-  "requestBody": null,
+  "requestBody": {
+    "required": true,
+    "content": {
+      "multipart/form-data": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "format": "binary",
+              "description": "The file to upload (e.g., image, document)."
+            }
+          },
+          "required": [
+            "file"
+          ]
+        }
+      }
+    }
+  },
   "responses": {
-    "201": {
-      "description": "File uploaded successfully.",
+    "200": {
+      "description": "File uploaded successfully and post created/updated.",
       "content": {
         "application/json": {
           "schema": {
@@ -18,54 +37,37 @@
             "properties": {
               "status": {
                 "type": "string",
-                "example": "success"
+                "example": "success",
+                "description": "Status of the operation."
               },
               "message": {
                 "type": "string",
-                "example": "File uploaded successfully."
+                "example": "File uploaded successfully.",
+                "description": "A descriptive success message."
               },
-              "data": {
-                "type": "object",
-                "properties": {
-                  "fileId": {
-                    "type": "string",
-                    "description": "Unique identifier for the uploaded file.",
-                    "example": "65e234c9c1f6d3b7e8a9d0c1"
-                  },
-                  "filename": {
-                    "type": "string",
-                    "description": "The original name of the uploaded file.",
-                    "example": "my_image.jpg"
-                  },
-                  "mimetype": {
-                    "type": "string",
-                    "description": "The MIME type of the uploaded file.",
-                    "example": "image/jpeg"
-                  },
-                  "size": {
-                    "type": "number",
-                    "description": "The size of the uploaded file in bytes.",
-                    "example": 123456
-                  },
-                  "url": {
-                    "type": "string",
-                    "description": "URL to access the uploaded file.",
-                    "example": "http://example.com/uploads/65e234c9c1f6d3b7e8a9d0c1.jpg"
-                  }
-                }
+              "fileId": {
+                "type": "string",
+                "description": "Unique identifier for the uploaded file.",
+                "example": "654321abcdef"
+              },
+              "fileName": {
+                "type": "string",
+                "description": "Original name of the uploaded file.",
+                "example": "my-cool-image.jpg"
+              },
+              "fileUrl": {
+                "type": "string",
+                "format": "url",
+                "description": "URL where the uploaded file can be accessed.",
+                "example": "https://api.example.com/uploads/654321abcdef.jpg"
               }
-            },
-            "required": [
-              "status",
-              "message",
-              "data"
-            ]
+            }
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request. No file provided or an issue with the upload.",
+      "description": "Bad Request - No file provided or invalid file format/size.",
       "content": {
         "application/json": {
           "schema": {
@@ -73,23 +75,21 @@
             "properties": {
               "status": {
                 "type": "string",
-                "example": "fail"
+                "example": "error",
+                "description": "Status of the operation."
               },
               "message": {
                 "type": "string",
-                "example": "No file uploaded or unsupported file type."
+                "example": "No file uploaded or invalid file type.",
+                "description": "Error message detailing the reason for the bad request."
               }
-            },
-            "required": [
-              "status",
-              "message"
-            ]
+            }
           }
         }
       }
     },
     "500": {
-      "description": "Internal Server Error.",
+      "description": "Internal Server Error - Something went wrong on the server.",
       "content": {
         "application/json": {
           "schema": {
@@ -101,13 +101,9 @@
               },
               "message": {
                 "type": "string",
-                "example": "An unexpected error occurred during file upload."
+                "example": "Failed to process the upload due to a server error."
               }
-            },
-            "required": [
-              "status",
-              "message"
-            ]
+            }
           }
         }
       }
