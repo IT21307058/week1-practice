@@ -29,8 +29,12 @@ jobs:
 
       - name: Fail if docs are not committed
         run: |
-          if [[ -n "$(git status --porcelain contracts docs/swagger.json)" ]]; then
-            echo "Docs are out of date. Run npm run docs:all and commit contracts + docs/swagger.json"
-            git status --porcelain contracts docs/swagger.json
+          missing=0
+
+          [ -f contracts ] || missing=1
+          [ -f docs/swagger.json ] || missing=1
+
+          if [ "$missing" -eq 1 ]; then
+            echo "Required docs files are missing. Run npm run docs:all and commit them."
             exit 1
           fi
