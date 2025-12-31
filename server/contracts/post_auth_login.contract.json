@@ -2,7 +2,7 @@
   "id": "login",
   "method": "post",
   "path": "/auth/login",
-  "summary": "Authenticate a user and generate an access token.",
+  "summary": "Authenticate user and issue an access token.",
   "tags": [
     "Auth"
   ],
@@ -21,12 +21,12 @@
             "email": {
               "type": "string",
               "format": "email",
-              "description": "The user's email address."
+              "description": "User's email address."
             },
             "password": {
               "type": "string",
               "format": "password",
-              "description": "The user's password."
+              "description": "User's password."
             }
           }
         }
@@ -35,7 +35,7 @@
   },
   "responses": {
     "200": {
-      "description": "Login successful. Returns an authentication token and user information.",
+      "description": "User logged in successfully.",
       "content": {
         "application/json": {
           "schema": {
@@ -43,33 +43,28 @@
             "properties": {
               "token": {
                 "type": "string",
-                "description": "The JWT authentication token for subsequent requests."
+                "description": "JWT authentication token."
               },
               "user": {
                 "type": "object",
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "The user's unique identifier."
+                    "description": "User's unique ID."
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "The user's email address."
+                    "description": "User's email address."
                   },
                   "name": {
                     "type": "string",
-                    "nullable": true,
-                    "description": "The user's name, if available."
+                    "description": "User's full name."
                   }
                 },
-                "description": "Basic information about the logged-in user."
+                "description": "Details of the logged-in user."
               }
-            },
-            "required": [
-              "token",
-              "user"
-            ]
+            }
           }
         }
       }
@@ -85,16 +80,13 @@
                 "type": "string",
                 "example": "Email and password are required."
               }
-            },
-            "required": [
-              "message"
-            ]
+            }
           }
         }
       }
     },
     "401": {
-      "description": "Unauthorized. Invalid credentials provided (e.g., incorrect email or password).",
+      "description": "Unauthorized. Invalid email or password.",
       "content": {
         "application/json": {
           "schema": {
@@ -102,12 +94,9 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Invalid email or password."
+                "example": "Invalid credentials."
               }
-            },
-            "required": [
-              "message"
-            ]
+            }
           }
         }
       }

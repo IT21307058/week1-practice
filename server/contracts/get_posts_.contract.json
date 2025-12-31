@@ -10,7 +10,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Successfully retrieved posts.",
+      "description": "Successfully retrieved a list of posts.",
       "content": {
         "application/json": {
           "schema": {
@@ -20,31 +20,29 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "format": "uuid",
-                  "description": "Unique identifier for the post."
+                  "description": "The unique identifier of the post."
                 },
                 "title": {
                   "type": "string",
-                  "description": "Title of the post."
+                  "description": "The title of the post."
                 },
                 "content": {
                   "type": "string",
-                  "description": "Body content of the post."
+                  "description": "The main content of the post."
                 },
                 "authorId": {
                   "type": "string",
-                  "format": "uuid",
-                  "description": "ID of the user who authored the post."
+                  "description": "The ID of the user who authored the post."
                 },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "Timestamp when the post was created."
+                  "description": "The timestamp when the post was created."
                 },
                 "updatedAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "Timestamp when the post was last updated."
+                  "description": "The timestamp when the post was last updated."
                 }
               },
               "required": [
@@ -61,7 +59,7 @@
       }
     },
     "500": {
-      "description": "Internal Server Error",
+      "description": "Internal server error.",
       "content": {
         "application/json": {
           "schema": {
@@ -69,7 +67,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Something went wrong."
+                "description": "A descriptive error message."
               }
             }
           }

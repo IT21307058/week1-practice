@@ -2,7 +2,7 @@
   "id": "deletePost",
   "method": "delete",
   "path": "/posts/{id}",
-  "summary": "Deletes a specific post by its ID.",
+  "summary": "Delete a post by ID",
   "tags": [
     "Posts"
   ],
@@ -12,7 +12,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Post successfully deleted.",
+      "description": "Post deleted successfully",
       "content": {
         "application/json": {
           "schema": {
@@ -20,7 +20,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Post successfully deleted."
+                "example": "Post deleted successfully"
               }
             }
           }
@@ -28,7 +28,7 @@
       }
     },
     "401": {
-      "description": "Unauthorized - Authentication required.",
+      "description": "Unauthorized: Authentication required",
       "content": {
         "application/json": {
           "schema": {
@@ -36,7 +36,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Unauthorized: Access token is missing or invalid."
+                "example": "Authentication required"
               }
             }
           }
@@ -44,7 +44,7 @@
       }
     },
     "403": {
-      "description": "Forbidden - User does not have permission to delete this post.",
+      "description": "Forbidden: You do not have permission to delete this post",
       "content": {
         "application/json": {
           "schema": {
@@ -52,7 +52,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Forbidden: You do not have permission to delete this post."
+                "example": "Forbidden: You do not have permission to delete this post"
               }
             }
           }
@@ -60,7 +60,7 @@
       }
     },
     "404": {
-      "description": "Not Found - Post with the specified ID does not exist.",
+      "description": "Post not found",
       "content": {
         "application/json": {
           "schema": {
@@ -68,7 +68,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Post not found."
+                "example": "Post not found"
               }
             }
           }

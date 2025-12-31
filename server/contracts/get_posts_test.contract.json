@@ -2,33 +2,30 @@
   "id": "testEndpoint",
   "method": "get",
   "path": "/posts/test",
-  "summary": "Test endpoint for demonstrating basic API connectivity.",
+  "summary": "Tests the endpoint connectivity and returns a simple success message.",
   "tags": [
-    "Posts",
-    "Utility"
+    "Posts"
   ],
   "security": [],
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Test endpoint successfully reached.",
+      "description": "Endpoint successfully tested.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "string",
-                "description": "A confirmation message from the test endpoint."
-              },
               "status": {
                 "type": "string",
-                "description": "Indicates the success status of the test."
+                "example": "success",
+                "description": "Status of the operation."
+              },
+              "message": {
+                "type": "string",
+                "example": "Test endpoint reached successfully!",
+                "description": "A descriptive message for the response."
               }
-            },
-            "example": {
-              "message": "Test endpoint hit successfully!",
-              "status": "success"
             }
           }
         }
