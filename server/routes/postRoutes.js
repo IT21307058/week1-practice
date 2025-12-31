@@ -13,5 +13,6 @@ router.get('/test', postController.testEndpoint);
 router.get('/test1', postController.testEndpoint1);
 router.get('/test2', postController.testEndpoint2);
 router.get('/test3', postController.testEndpoint3);
+router.get('/test4', postController.testEndpoint4);
 
 module.exports = router;
