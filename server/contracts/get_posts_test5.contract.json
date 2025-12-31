@@ -1,0 +1,49 @@
+{
+  "id": "testEndpoint5",
+  "method": "get",
+  "path": "/posts/test5",
+  "summary": "Retrieves test data for endpoint 5",
+  "tags": [
+    "posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "Test data retrieved successfully.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "A success message."
+              },
+              "data": {
+                "type": "object",
+                "description": "Generic test data payload.",
+                "properties": {
+                  "exampleField": {
+                    "type": "string",
+                    "description": "An example field returned by the test endpoint."
+                  },
+                  "anotherValue": {
+                    "type": "integer",
+                    "description": "Another example value."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "Bad request if any invalid parameters are passed (though unlikely for a simple GET)."
+    },
+    "500": {
+      "description": "Internal server error."
+    }
+  }
+}
