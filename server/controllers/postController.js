@@ -85,6 +85,44 @@ class PostController {
             res.status(500).json({ message: 'Internal server error' });
         }
     }
+
+    async testEndpoint2(req, res) {
+        try {
+            const testData = {
+                message: 'Test endpoint is working!',
+                timestamp: new Date().toISOString(),
+                status: 'success',
+                data: {
+                    query: req.query,
+                    params: req.params,
+                    body: req.body
+                }
+            };
+            res.status(200).json(testData);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async testEndpoint3(req, res) {
+        try {
+            const testData = {
+                message: 'Test endpoint is working!',
+                timestamp: new Date().toISOString(),
+                status: 'success',
+                data: {
+                    query: req.query,
+                    params: req.params,
+                    body: req.body
+                }
+            };
+            res.status(200).json(testData);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = new PostController();

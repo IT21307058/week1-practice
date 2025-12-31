@@ -318,15 +318,6 @@ async function main() {
                 openapiPath = routePrefix + openapiPath;
             }
             
-            const outFile = path.join(CONTRACTS_DIR, contractFilename(ep.method, openapiPath));
-            
-            // Skip if contract already exists
-            if (fs.existsSync(outFile)) {
-                console.log(`  → ${ep.method.toUpperCase()} ${openapiPath} ✓ (already exists, skipping)`);
-                allContracts.push(outFile);
-                continue;
-            }
-            
             console.log(`  → ${ep.method.toUpperCase()} ${openapiPath}`);
 
             const controllerFile = findControllerFileByHandler(ep.handlerName);
@@ -359,6 +350,7 @@ async function main() {
                 contract.id ||
                 (ep.handlerName ? ep.handlerName : `${ep.method}_${openapiPath}`.replace(/[\/{}]/g, "_"));
 
+            const outFile = path.join(CONTRACTS_DIR, contractFilename(ep.method, openapiPath));
             fs.writeFileSync(outFile, JSON.stringify(contract, null, 2), "utf8");
             console.log("✅ Wrote contract:", path.relative(process.cwd(), outFile));
 
