@@ -295,6 +295,101 @@
         }
       }
     },
+    "/posts/test1": {
+      "get": {
+        "summary": "Retrieves a simple test response from the server.",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of test data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Indicates the status of the operation.",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A descriptive message for the test endpoint.",
+                      "example": "Test endpoint data retrieved successfully."
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Contains sample data from the test endpoint.",
+                      "properties": {
+                        "testProperty": {
+                          "type": "string",
+                          "description": "A sample string property.",
+                          "example": "This is a test value."
+                        },
+                        "testNumber": {
+                          "type": "integer",
+                          "description": "A sample numeric property.",
+                          "example": 123
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The timestamp of the response.",
+                          "example": "2023-10-27T10:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Typically for invalid query parameters if they were expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid query parameters provided."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An unexpected error occurred on the server."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/": {
       "get": {
         "summary": "Retrieve a list of all users registered in the system.",
