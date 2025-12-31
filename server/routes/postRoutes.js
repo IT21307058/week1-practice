@@ -10,4 +10,8 @@ router.post('/upload', upload.single('file'), postController.upload);
 router.get('/', postController.getPosts);
 router.delete('/:id', authMiddleware, postController.deletePost);
 router.get('/test', postController.testEndpoint);
+router.get('/test1', postController.testEndpoint1);
+router.get('/test2', postController.testEndpoint2);
+router.get('/test3', postController.testEndpoint3);
+
 module.exports = router;

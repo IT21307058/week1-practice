@@ -1,0 +1,32 @@
+{
+  "id": "testEndpoint2",
+  "method": "get",
+  "path": "/posts/test2",
+  "summary": "Retrieves data for test endpoint 2.",
+  "tags": [
+    "Posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "Successful retrieval of test data.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "A success message or test data."
+              }
+            },
+            "example": {
+              "message": "This is test endpoint 2 data."
+            }
+          }
+        }
+      }
+    }
+  }
+}

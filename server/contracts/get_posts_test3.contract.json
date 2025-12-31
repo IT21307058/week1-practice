@@ -1,0 +1,68 @@
+{
+  "id": "testEndpoint3",
+  "method": "get",
+  "path": "/posts/test3",
+  "summary": "Retrieve data for test endpoint 3",
+  "tags": [
+    "Posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "Successfully retrieved test data.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "A success message confirming data retrieval."
+              },
+              "data": {
+                "type": "string",
+                "description": "Placeholder for actual test data returned. (Controller code not found for inference)"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        }
+      }
+    },
+    "404": {
+      "description": "Test endpoint not found or resource unavailable.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string",
+                "description": "Error message indicating the resource was not found."
+              }
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal server error during test data retrieval.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string",
+                "description": "A general error message for server-side issues."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

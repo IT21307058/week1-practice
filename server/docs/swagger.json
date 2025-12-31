@@ -295,6 +295,197 @@
         }
       }
     },
+    "/posts/test1": {
+      "get": {
+        "summary": "Retrieves a simple test response from the server.",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of test data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Indicates the status of the operation.",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A descriptive message for the test endpoint.",
+                      "example": "Test endpoint data retrieved successfully."
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Contains sample data from the test endpoint.",
+                      "properties": {
+                        "testProperty": {
+                          "type": "string",
+                          "description": "A sample string property.",
+                          "example": "This is a test value."
+                        },
+                        "testNumber": {
+                          "type": "integer",
+                          "description": "A sample numeric property.",
+                          "example": 123
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The timestamp of the response.",
+                          "example": "2023-10-27T10:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Typically for invalid query parameters if they were expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid query parameters provided."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An unexpected error occurred on the server."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/test2": {
+      "get": {
+        "summary": "Retrieves data for test endpoint 2.",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of test data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "A success message or test data."
+                    }
+                  },
+                  "example": {
+                    "message": "This is test endpoint 2 data."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/test3": {
+      "get": {
+        "summary": "Retrieve data for test endpoint 3",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved test data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "A success message confirming data retrieval."
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Placeholder for actual test data returned. (Controller code not found for inference)"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Test endpoint not found or resource unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating the resource was not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during test data retrieval.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "A general error message for server-side issues."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/": {
       "get": {
         "summary": "Retrieve a list of all users registered in the system.",
@@ -537,7 +728,7 @@
     },
     "/auth/register": {
       "post": {
-        "summary": "Register a new user account",
+        "summary": "Register a new user account.",
         "tags": [
           "Authentication"
         ],
@@ -556,20 +747,21 @@
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "The user's email address.",
-                    "example": "user@example.com"
+                    "description": "The user's unique email address.",
+                    "example": "new.user@example.com"
                   },
                   "password": {
                     "type": "string",
                     "format": "password",
-                    "description": "The user's chosen password.",
-                    "minLength": 6,
-                    "example": "MyStrongPassword123"
+                    "description": "The user's chosen password. Should be strong (e.g., min 8 chars, mixed case, numbers, symbols).",
+                    "minLength": 8,
+                    "example": "MySuperSecureP@ssw0rd!"
                   },
-                  "name": {
+                  "username": {
                     "type": "string",
-                    "description": "The user's full name (optional).",
-                    "example": "John Doe"
+                    "description": "An optional username for the user. If not provided, one might be generated or the email could be used.",
+                    "minLength": 3,
+                    "example": "newuser123"
                   }
                 }
               }
@@ -586,28 +778,35 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User registered successfully!"
+                      "description": "A success message indicating the user was registered.",
+                      "example": "User registered successfully."
                     },
                     "user": {
                       "type": "object",
+                      "description": "Details of the newly registered user.",
                       "properties": {
                         "id": {
                           "type": "string",
-                          "example": "6543210fedcba98765432109"
+                          "format": "uuid",
+                          "description": "The unique identifier of the user.",
+                          "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
                         },
                         "email": {
                           "type": "string",
                           "format": "email",
-                          "example": "user@example.com"
+                          "description": "The email address of the user.",
+                          "example": "new.user@example.com"
                         },
-                        "name": {
+                        "username": {
                           "type": "string",
-                          "example": "John Doe"
+                          "description": "The username of the user (if provided during registration).",
+                          "example": "newuser123"
                         },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-10-27T10:00:00.000Z"
+                          "description": "Timestamp of when the user account was created.",
+                          "example": "2023-10-27T10:00:00Z"
                         }
                       }
                     }
@@ -617,7 +816,7 @@
             }
           },
           "400": {
-            "description": "Bad Request - Invalid input or missing required fields.",
+            "description": "Bad Request. The request body contains invalid or missing data (e.g., email already exists, invalid password format, missing required fields).",
             "content": {
               "application/json": {
                 "schema": {
@@ -625,23 +824,19 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Email and password are required."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict - User with this email already exists.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "User with 'user@example.com' already exists."
+                      "description": "A descriptive error message.",
+                      "example": "This email is already registered."
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Optional array of specific validation error details.",
+                      "example": [
+                        "Password must be at least 8 characters long",
+                        "Email format is invalid"
+                      ]
                     }
                   }
                 }

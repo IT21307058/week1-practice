@@ -13,9 +13,7 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 const { geminiApiKey } = require("../config/env.js");
-const GEMINI_API_KEY =  geminiApiKey || "AIzaSyCx2k1agOoDPknAcZpvMlCUjjXBrHnGdNg";
-
-console.log("GEMINI-based Contract Generator", GEMINI_API_KEY);
+const GEMINI_API_KEY = geminiApiKey;
 
 console.log("Using GEMINI_API_KEY:", GEMINI_API_KEY ? "✅ found" : "❌ missing");
 if (!GEMINI_API_KEY) {
@@ -320,6 +318,15 @@ async function main() {
                 openapiPath = routePrefix + openapiPath;
             }
             
+            const outFile = path.join(CONTRACTS_DIR, contractFilename(ep.method, openapiPath));
+            
+            // Skip if contract already exists
+            if (fs.existsSync(outFile)) {
+                console.log(`  → ${ep.method.toUpperCase()} ${openapiPath} ✓ (already exists, skipping)`);
+                allContracts.push(outFile);
+                continue;
+            }
+            
             console.log(`  → ${ep.method.toUpperCase()} ${openapiPath}`);
 
             const controllerFile = findControllerFileByHandler(ep.handlerName);
@@ -352,7 +359,6 @@ async function main() {
                 contract.id ||
                 (ep.handlerName ? ep.handlerName : `${ep.method}_${openapiPath}`.replace(/[\/{}]/g, "_"));
 
-            const outFile = path.join(CONTRACTS_DIR, contractFilename(ep.method, openapiPath));
             fs.writeFileSync(outFile, JSON.stringify(contract, null, 2), "utf8");
             console.log("✅ Wrote contract:", path.relative(process.cwd(), outFile));
 

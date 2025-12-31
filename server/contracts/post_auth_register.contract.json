@@ -1,8 +1,8 @@
 {
-  "id": "register",
+  "id": "registerUser",
   "method": "post",
   "path": "/auth/register",
-  "summary": "Register a new user account",
+  "summary": "Register a new user account.",
   "tags": [
     "Authentication"
   ],
@@ -21,20 +21,21 @@
             "email": {
               "type": "string",
               "format": "email",
-              "description": "The user's email address.",
-              "example": "user@example.com"
+              "description": "The user's unique email address.",
+              "example": "new.user@example.com"
             },
             "password": {
               "type": "string",
               "format": "password",
-              "description": "The user's chosen password.",
-              "minLength": 6,
-              "example": "MyStrongPassword123"
+              "description": "The user's chosen password. Should be strong (e.g., min 8 chars, mixed case, numbers, symbols).",
+              "minLength": 8,
+              "example": "MySuperSecureP@ssw0rd!"
             },
-            "name": {
+            "username": {
               "type": "string",
-              "description": "The user's full name (optional).",
-              "example": "John Doe"
+              "description": "An optional username for the user. If not provided, one might be generated or the email could be used.",
+              "minLength": 3,
+              "example": "newuser123"
             }
           }
         }
@@ -51,28 +52,35 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "User registered successfully!"
+                "description": "A success message indicating the user was registered.",
+                "example": "User registered successfully."
               },
               "user": {
                 "type": "object",
+                "description": "Details of the newly registered user.",
                 "properties": {
                   "id": {
                     "type": "string",
-                    "example": "6543210fedcba98765432109"
+                    "format": "uuid",
+                    "description": "The unique identifier of the user.",
+                    "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "example": "user@example.com"
+                    "description": "The email address of the user.",
+                    "example": "new.user@example.com"
                   },
-                  "name": {
+                  "username": {
                     "type": "string",
-                    "example": "John Doe"
+                    "description": "The username of the user (if provided during registration).",
+                    "example": "newuser123"
                   },
                   "createdAt": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2023-10-27T10:00:00.000Z"
+                    "description": "Timestamp of when the user account was created.",
+                    "example": "2023-10-27T10:00:00Z"
                   }
                 }
               }
@@ -82,7 +90,7 @@
       }
     },
     "400": {
-      "description": "Bad Request - Invalid input or missing required fields.",
+      "description": "Bad Request. The request body contains invalid or missing data (e.g., email already exists, invalid password format, missing required fields).",
       "content": {
         "application/json": {
           "schema": {
@@ -90,23 +98,19 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Email and password are required."
-              }
-            }
-          }
-        }
-      }
-    },
-    "409": {
-      "description": "Conflict - User with this email already exists.",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "example": "User with 'user@example.com' already exists."
+                "description": "A descriptive error message.",
+                "example": "This email is already registered."
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Optional array of specific validation error details.",
+                "example": [
+                  "Password must be at least 8 characters long",
+                  "Email format is invalid"
+                ]
               }
             }
           }
