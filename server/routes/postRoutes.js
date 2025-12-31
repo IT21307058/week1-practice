@@ -5,7 +5,7 @@ const upload = multer();
 const postController = require('../controllers/postController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-// hi
+// hi hi
 router.post('/upload', upload.single('file'), postController.upload);
 router.get('/', postController.getPosts);
 router.delete('/:id', authMiddleware, postController.deletePost);
