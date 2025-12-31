@@ -2,49 +2,15 @@
   "id": "createNewUser",
   "method": "post",
   "path": "/users/",
-  "summary": "Create a new user account.",
+  "summary": "Create a new user",
   "tags": [
     "Users"
   ],
   "security": [],
-  "requestBody": {
-    "required": true,
-    "content": {
-      "application/json": {
-        "schema": {
-          "type": "object",
-          "required": [
-            "username",
-            "email",
-            "password"
-          ],
-          "properties": {
-            "username": {
-              "type": "string",
-              "description": "The desired username for the new account.",
-              "example": "john_doe"
-            },
-            "email": {
-              "type": "string",
-              "format": "email",
-              "description": "The email address for the new account. Must be unique.",
-              "example": "john.doe@example.com"
-            },
-            "password": {
-              "type": "string",
-              "format": "password",
-              "description": "The password for the new account. Minimum 8 characters.",
-              "minLength": 8,
-              "example": "mySecretPassword123"
-            }
-          }
-        }
-      }
-    }
-  },
+  "requestBody": null,
   "responses": {
     "201": {
-      "description": "User created successfully.",
+      "description": "User created successfully",
       "content": {
         "application/json": {
           "schema": {
@@ -52,50 +18,54 @@
             "properties": {
               "status": {
                 "type": "string",
-                "enum": [
-                  "success"
-                ],
                 "example": "success"
               },
-              "data": {
+              "message": {
+                "type": "string",
+                "example": "User created successfully"
+              },
+              "user": {
                 "type": "object",
                 "properties": {
-                  "user": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The unique identifier of the newly created user.",
-                        "example": "65e6d2b3c7f9a1e0d4c8b5a6"
-                      },
-                      "username": {
-                        "type": "string",
-                        "description": "The username of the new user.",
-                        "example": "john_doe"
-                      },
-                      "email": {
-                        "type": "string",
-                        "format": "email",
-                        "description": "The email of the new user.",
-                        "example": "john.doe@example.com"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Timestamp when the user account was created.",
-                        "example": "2023-10-27T10:00:00.000Z"
-                      }
-                    }
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier of the user"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Full name of the user"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address of the user"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp of user creation"
                   }
-                }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "email",
+                  "createdAt"
+                ]
               }
-            }
+            },
+            "required": [
+              "status",
+              "message",
+              "user"
+            ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request. Invalid input data or missing required fields.",
+      "description": "Bad Request - Invalid input provided",
       "content": {
         "application/json": {
           "schema": {
@@ -103,18 +73,17 @@
             "properties": {
               "status": {
                 "type": "string",
-                "enum": [
-                  "fail",
-                  "error"
-                ],
                 "example": "fail"
               },
               "message": {
                 "type": "string",
-                "description": "Description of the error.",
-                "example": "Email is already in use."
+                "example": "Invalid data provided (e.g., email missing or invalid format)"
               }
-            }
+            },
+            "required": [
+              "status",
+              "message"
+            ]
           }
         }
       }

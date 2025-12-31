@@ -2,7 +2,7 @@
   "id": "uploadPost",
   "method": "post",
   "path": "/posts/upload",
-  "summary": "Upload a new post, including a file, to the server.",
+  "summary": "Upload a new post, including a file and optional metadata.",
   "tags": [
     "Posts"
   ],
@@ -10,22 +10,26 @@
   "requestBody": {
     "required": true,
     "content": {
-      "application/json": {
+      "multipart/form-data": {
         "schema": {
           "type": "object",
-          "description": "Request body for uploading a post. The file content is expected as a base64 encoded string.",
           "required": [
             "file"
           ],
           "properties": {
             "file": {
               "type": "string",
-              "format": "byte",
-              "description": "The file content encoded as a base64 string. (e.g., image/document data)"
+              "format": "binary",
+              "description": "The file to upload for the post. This is handled by `multer.single('file')`."
+            },
+            "title": {
+              "type": "string",
+              "description": "Optional title for the post. (Cannot be inferred as required without controller code).",
+              "maxLength": 255
             },
             "description": {
               "type": "string",
-              "description": "Optional description or caption for the post."
+              "description": "Optional detailed description of the post. (Cannot be inferred as required without controller code)."
             }
           }
         }
@@ -34,37 +38,42 @@
   },
   "responses": {
     "201": {
-      "description": "File uploaded successfully and post created.",
+      "description": "Post uploaded successfully.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
+              "id": {
                 "type": "string",
-                "description": "A confirmation message indicating successful upload."
-              },
-              "postId": {
-                "type": "string",
+                "format": "uuid",
                 "description": "The unique identifier of the newly created post."
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the uploaded post (if provided)."
               },
               "fileUrl": {
                 "type": "string",
                 "format": "uri",
-                "description": "The public URL where the uploaded file can be accessed."
+                "description": "The URL where the uploaded file can be accessed."
+              },
+              "message": {
+                "type": "string",
+                "description": "A confirmation message upon successful upload."
               }
             },
             "required": [
-              "message",
-              "postId",
-              "fileUrl"
+              "id",
+              "fileUrl",
+              "message"
             ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request. The request was malformed, or required fields were missing.",
+      "description": "Bad Request - The request was malformed, or missing the required file.",
       "content": {
         "application/json": {
           "schema": {
@@ -72,7 +81,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "Error message explaining the reason for the bad request (e.g., 'File content is required')."
+                "description": "Error message detailing the bad request (e.g., 'No file uploaded')."
               }
             },
             "required": [
@@ -83,7 +92,7 @@
       }
     },
     "500": {
-      "description": "Internal Server Error. An unexpected error occurred on the server.",
+      "description": "Internal Server Error - An unexpected error occurred on the server during the upload process.",
       "content": {
         "application/json": {
           "schema": {
@@ -91,7 +100,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "Generic error message from the server."
+                "description": "Generic server error message."
               }
             },
             "required": [

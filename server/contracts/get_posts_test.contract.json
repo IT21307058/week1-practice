@@ -1,0 +1,53 @@
+{
+  "id": "testEndpoint",
+  "method": "get",
+  "path": "/posts/test",
+  "summary": "Retrieve basic test data or status from the endpoint.",
+  "tags": [
+    "Posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "Successfully retrieved test data or endpoint status.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "success"
+              },
+              "message": {
+                "type": "string",
+                "example": "Test endpoint is operational."
+              }
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal server error.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "message": {
+                "type": "string",
+                "example": "Something went wrong on the server."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

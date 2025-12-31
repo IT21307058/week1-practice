@@ -2,9 +2,10 @@
   "id": "getMe",
   "method": "get",
   "path": "/auth/me",
-  "summary": "Get the profile of the currently authenticated user",
+  "summary": "Get current user's profile information",
   "tags": [
-    "Authentication"
+    "Authentication",
+    "Users"
   ],
   "security": [
     "bearerAuth"
@@ -12,7 +13,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Successfully retrieved authenticated user profile.",
+      "description": "Successfully retrieved current user's profile.",
       "content": {
         "application/json": {
           "schema": {
@@ -20,85 +21,50 @@
             "properties": {
               "id": {
                 "type": "string",
-                "description": "The unique identifier of the user."
-              },
-              "name": {
-                "type": "string",
-                "description": "The name of the user."
+                "format": "uuid",
+                "description": "Unique identifier of the user"
               },
               "email": {
                 "type": "string",
                 "format": "email",
-                "description": "The email address of the user."
+                "description": "Email address of the user"
               },
-              "role": {
+              "name": {
                 "type": "string",
-                "description": "The role of the user (e.g., 'user', 'admin')."
+                "description": "Full name of the user"
               },
               "createdAt": {
                 "type": "string",
                 "format": "date-time",
-                "description": "Timestamp when the user account was created."
+                "description": "Timestamp when the user account was created"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp when the user account was last updated"
               }
-            }
+            },
+            "required": [
+              "id",
+              "email",
+              "name",
+              "createdAt",
+              "updatedAt"
+            ]
           }
         }
       }
     },
     "401": {
-      "description": "Unauthorized - No token provided or token is invalid.",
+      "description": "Unauthorized - No authentication token provided or token is invalid.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
-              "status": {
-                "type": "string",
-                "example": "fail"
-              },
               "message": {
                 "type": "string",
                 "example": "Unauthorized: Access token is missing or invalid."
-              }
-            }
-          }
-        }
-      }
-    },
-    "403": {
-      "description": "Forbidden - User does not have necessary permissions.",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "status": {
-                "type": "string",
-                "example": "fail"
-              },
-              "message": {
-                "type": "string",
-                "example": "Forbidden: You do not have permission to access this resource."
-              }
-            }
-          }
-        }
-      }
-    },
-    "500": {
-      "description": "Internal server error.",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "status": {
-                "type": "string",
-                "example": "error"
-              },
-              "message": {
-                "type": "string",
-                "example": "Something went wrong on the server."
               }
             }
           }

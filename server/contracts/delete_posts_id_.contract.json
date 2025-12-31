@@ -12,7 +12,7 @@
   "requestBody": null,
   "responses": {
     "200": {
-      "description": "Post deleted successfully",
+      "description": "Post deleted successfully.",
       "content": {
         "application/json": {
           "schema": {
@@ -28,7 +28,7 @@
       }
     },
     "401": {
-      "description": "Unauthorized - Missing or invalid authentication token",
+      "description": "Unauthorized.",
       "content": {
         "application/json": {
           "schema": {
@@ -36,7 +36,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Unauthorized"
+                "example": "Unauthorized: Access token is missing or invalid"
               }
             }
           }
@@ -44,7 +44,7 @@
       }
     },
     "403": {
-      "description": "Forbidden - User does not have permission to delete this post",
+      "description": "Forbidden.",
       "content": {
         "application/json": {
           "schema": {
@@ -52,7 +52,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Forbidden: You do not have permission to delete this post."
+                "example": "Forbidden: You do not have permission to delete this post"
               }
             }
           }
@@ -60,7 +60,7 @@
       }
     },
     "404": {
-      "description": "Post not found",
+      "description": "Post not found.",
       "content": {
         "application/json": {
           "schema": {
@@ -69,22 +69,6 @@
               "message": {
                 "type": "string",
                 "example": "Post not found"
-              }
-            }
-          }
-        }
-      }
-    },
-    "500": {
-      "description": "Internal server error",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "example": "Internal server error"
               }
             }
           }

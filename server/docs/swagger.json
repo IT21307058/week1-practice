@@ -19,7 +19,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Post deleted successfully",
+            "description": "Post deleted successfully.",
             "content": {
               "application/json": {
                 "schema": {
@@ -35,7 +35,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized - Missing or invalid authentication token",
+            "description": "Unauthorized.",
             "content": {
               "application/json": {
                 "schema": {
@@ -43,7 +43,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Unauthorized"
+                      "example": "Unauthorized: Access token is missing or invalid"
                     }
                   }
                 }
@@ -51,7 +51,7 @@
             }
           },
           "403": {
-            "description": "Forbidden - User does not have permission to delete this post",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -59,7 +59,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Forbidden: You do not have permission to delete this post."
+                      "example": "Forbidden: You do not have permission to delete this post"
                     }
                   }
                 }
@@ -67,7 +67,7 @@
             }
           },
           "404": {
-            "description": "Post not found",
+            "description": "Post not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -81,31 +81,16 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Internal server error"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
     },
     "/auth/me": {
       "get": {
-        "summary": "Get the profile of the currently authenticated user",
+        "summary": "Get current user's profile information",
         "tags": [
-          "Authentication"
+          "Authentication",
+          "Users"
         ],
         "security": [
           {
@@ -115,7 +100,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Successfully retrieved authenticated user profile.",
+            "description": "Successfully retrieved current user's profile.",
             "content": {
               "application/json": {
                 "schema": {
@@ -123,85 +108,50 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "The unique identifier of the user."
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "The name of the user."
+                      "format": "uuid",
+                      "description": "Unique identifier of the user"
                     },
                     "email": {
                       "type": "string",
                       "format": "email",
-                      "description": "The email address of the user."
+                      "description": "Email address of the user"
                     },
-                    "role": {
+                    "name": {
                       "type": "string",
-                      "description": "The role of the user (e.g., 'user', 'admin')."
+                      "description": "Full name of the user"
                     },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time",
-                      "description": "Timestamp when the user account was created."
+                      "description": "Timestamp when the user account was created"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Timestamp when the user account was last updated"
                     }
-                  }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "name",
+                    "createdAt",
+                    "updatedAt"
+                  ]
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized - No token provided or token is invalid.",
+            "description": "Unauthorized - No authentication token provided or token is invalid.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
                     "message": {
                       "type": "string",
                       "example": "Unauthorized: Access token is missing or invalid."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - User does not have necessary permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Forbidden: You do not have permission to access this resource."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Something went wrong on the server."
                     }
                   }
                 }
@@ -220,7 +170,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "A list of posts retrieved successfully.",
+            "description": "Successfully retrieved posts.",
             "content": {
               "application/json": {
                 "schema": {
@@ -254,22 +204,14 @@
                         "format": "date-time",
                         "description": "Timestamp when the post was last updated."
                       }
-                    },
-                    "required": [
-                      "id",
-                      "title",
-                      "content",
-                      "authorId",
-                      "createdAt",
-                      "updatedAt"
-                    ]
+                    }
                   }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server Error.",
+            "description": "Internal server error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -277,7 +219,58 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Failed to retrieve posts due to a server error."
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/test": {
+      "get": {
+        "summary": "Retrieve basic test data or status from the endpoint.",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved test data or endpoint status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Test endpoint is operational."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Something went wrong on the server."
                     }
                   }
                 }
@@ -289,14 +282,14 @@
     },
     "/users/": {
       "get": {
-        "summary": "Retrieve a list of all registered users.",
+        "summary": "Retrieve a list of all users.",
         "tags": [
           "Users"
         ],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Successfully retrieved a list of all users.",
+            "description": "A list of user objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -320,19 +313,20 @@
                       "createdAt": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "Timestamp when the user account was created."
+                        "description": "The date and time when the user was created."
                       },
                       "updatedAt": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "Timestamp when the user account was last updated."
+                        "description": "The date and time when the user was last updated."
                       }
                     },
                     "required": [
                       "id",
                       "name",
                       "email",
-                      "createdAt"
+                      "createdAt",
+                      "updatedAt"
                     ]
                   }
                 }
@@ -346,9 +340,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
                     "message": {
                       "type": "string",
-                      "example": "An unexpected error occurred."
+                      "example": "Something went wrong."
                     }
                   }
                 }
@@ -358,9 +356,99 @@
         }
       },
       "post": {
-        "summary": "Create a new user account.",
+        "summary": "Create a new user",
         "tags": [
           "Users"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User created successfully"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Unique identifier of the user"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Full name of the user"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "description": "Email address of the user"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp of user creation"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "createdAt"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message",
+                    "user"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid data provided (e.g., email missing or invalid format)"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Log in an existing user and receive an authentication token.",
+        "tags": [
+          "Authentication"
         ],
         "parameters": [],
         "requestBody": {
@@ -370,28 +458,157 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "username",
                   "email",
                   "password"
                 ],
                 "properties": {
-                  "username": {
+                  "email": {
                     "type": "string",
-                    "description": "The desired username for the new account.",
-                    "example": "john_doe"
+                    "format": "email",
+                    "description": "The user's email address."
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 6,
+                    "description": "The user's password."
+                  }
+                },
+                "example": {
+                  "email": "user@example.com",
+                  "password": "Password123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "A JWT (JSON Web Token) for authenticating subsequent requests."
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The ID of the logged-in user."
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "description": "The email of the logged-in user."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the logged-in user (if available)."
+                        }
+                      },
+                      "example": {
+                        "id": "60d0fe4f5ae121000f089f2a",
+                        "email": "user@example.com",
+                        "name": "John Doe"
+                      }
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDBmZTRmNWFlMTIxMDAwZjA4OWYyYSIsImlhdCI6MTYyNDEwMjM2NywiZXhwIjoxNjI0MTA1OTY3fQ.signature_here",
+                    "user": {
+                      "id": "60d0fe4f5ae121000f089f2a",
+                      "email": "user@example.com",
+                      "name": "John Doe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing required fields or invalid input format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid email or password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user account. Note: Request and response schemas are based on common patterns for registration endpoints, as the specific controller code was not provided for inference.",
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "passwordConfirm"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's full name",
+                    "example": "John Doe"
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "The email address for the new account. Must be unique.",
+                    "description": "User's email address (must be unique)",
                     "example": "john.doe@example.com"
                   },
                   "password": {
                     "type": "string",
                     "format": "password",
-                    "description": "The password for the new account. Minimum 8 characters.",
                     "minLength": 8,
-                    "example": "mySecretPassword123"
+                    "description": "User's password (minimum 8 characters)",
+                    "example": "mysecretpassword123"
+                  },
+                  "passwordConfirm": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 8,
+                    "description": "Confirm user's password; must match the 'password' field",
+                    "example": "mysecretpassword123"
                   }
                 }
               }
@@ -400,7 +617,7 @@
         },
         "responses": {
           "201": {
-            "description": "User created successfully.",
+            "description": "User registered successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -408,10 +625,16 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "success"
-                      ],
                       "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "Authentication token for the newly registered user",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZWY1ZjBmMTIzNDU2Nzg5MGFiY2RlZiIsImlhdCI6MTYyNjYzNTc5MCwiZXhwIjoxNjI3MjQwNTkwfQ...."
                     },
                     "data": {
                       "type": "object",
@@ -421,24 +644,21 @@
                           "properties": {
                             "id": {
                               "type": "string",
-                              "description": "The unique identifier of the newly created user.",
-                              "example": "65e6d2b3c7f9a1e0d4c8b5a6"
+                              "description": "Unique identifier of the registered user",
+                              "example": "60ef5f0f1234567890abcdef"
                             },
-                            "username": {
+                            "name": {
                               "type": "string",
-                              "description": "The username of the new user.",
-                              "example": "john_doe"
+                              "example": "John Doe"
                             },
                             "email": {
                               "type": "string",
                               "format": "email",
-                              "description": "The email of the new user.",
                               "example": "john.doe@example.com"
                             },
                             "createdAt": {
                               "type": "string",
                               "format": "date-time",
-                              "description": "Timestamp when the user account was created.",
                               "example": "2023-10-27T10:00:00.000Z"
                             }
                           }
@@ -451,7 +671,7 @@
             }
           },
           "400": {
-            "description": "Bad Request. Invalid input data or missing required fields.",
+            "description": "Bad request due to invalid input, missing fields, or email already in use",
             "content": {
               "application/json": {
                 "schema": {
@@ -459,206 +679,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "fail",
-                        "error"
-                      ],
                       "example": "fail"
                     },
                     "message": {
                       "type": "string",
-                      "description": "Description of the error.",
-                      "example": "Email is already in use."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "summary": "Authenticates a user and returns an access token.",
-        "tags": [
-          "Authentication"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "User's email address."
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "description": "User's password."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User successfully logged in, returns access token.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "accessToken": {
-                      "type": "string",
-                      "description": "JWT access token for authenticated requests."
-                    },
-                    "tokenType": {
-                      "type": "string",
-                      "example": "Bearer",
-                      "description": "Type of the token."
-                    },
-                    "expiresIn": {
-                      "type": "integer",
-                      "description": "Token expiry time in seconds."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload (e.g., missing email or password).",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message indicating the bad request."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized: Invalid credentials provided.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message indicating authentication failure (e.g., 'Invalid email or password')."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/register": {
-      "post": {
-        "summary": "Register a new user account.",
-        "tags": [
-          "Authentication"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "username",
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "username": {
-                    "type": "string",
-                    "description": "Unique username for the new account."
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Unique email address for the new account."
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "description": "Password for the new account. Should be at least 8 characters long."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User registered successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "User registered successfully."
-                    },
-                    "token": {
-                      "type": "string",
-                      "description": "JWT token for the newly registered user, allowing immediate authentication."
-                    },
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "example": "6543210fedcba9876543210f"
-                        },
-                        "username": {
-                          "type": "string",
-                          "example": "newUser123"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "new.user@example.com"
-                        }
-                      },
-                      "description": "Details of the newly registered user."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request. Invalid input data or user already exists.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Email already in use."
+                      "example": "Email address is already registered."
                     },
                     "errors": {
                       "type": "array",
@@ -667,11 +692,11 @@
                         "properties": {
                           "field": {
                             "type": "string",
-                            "example": "email"
+                            "example": "passwordConfirm"
                           },
                           "message": {
                             "type": "string",
-                            "example": "Email is not valid."
+                            "example": "Passwords do not match."
                           }
                         }
                       }
@@ -686,7 +711,7 @@
     },
     "/posts/upload": {
       "post": {
-        "summary": "Upload a new post, including a file, to the server.",
+        "summary": "Upload a new post, including a file and optional metadata.",
         "tags": [
           "Posts"
         ],
@@ -694,22 +719,26 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "description": "Request body for uploading a post. The file content is expected as a base64 encoded string.",
                 "required": [
                   "file"
                 ],
                 "properties": {
                   "file": {
                     "type": "string",
-                    "format": "byte",
-                    "description": "The file content encoded as a base64 string. (e.g., image/document data)"
+                    "format": "binary",
+                    "description": "The file to upload for the post. This is handled by `multer.single('file')`."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Optional title for the post. (Cannot be inferred as required without controller code).",
+                    "maxLength": 255
                   },
                   "description": {
                     "type": "string",
-                    "description": "Optional description or caption for the post."
+                    "description": "Optional detailed description of the post. (Cannot be inferred as required without controller code)."
                   }
                 }
               }
@@ -718,37 +747,42 @@
         },
         "responses": {
           "201": {
-            "description": "File uploaded successfully and post created.",
+            "description": "Post uploaded successfully.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
+                    "id": {
                       "type": "string",
-                      "description": "A confirmation message indicating successful upload."
-                    },
-                    "postId": {
-                      "type": "string",
+                      "format": "uuid",
                       "description": "The unique identifier of the newly created post."
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The title of the uploaded post (if provided)."
                     },
                     "fileUrl": {
                       "type": "string",
                       "format": "uri",
-                      "description": "The public URL where the uploaded file can be accessed."
+                      "description": "The URL where the uploaded file can be accessed."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A confirmation message upon successful upload."
                     }
                   },
                   "required": [
-                    "message",
-                    "postId",
-                    "fileUrl"
+                    "id",
+                    "fileUrl",
+                    "message"
                   ]
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request. The request was malformed, or required fields were missing.",
+            "description": "Bad Request - The request was malformed, or missing the required file.",
             "content": {
               "application/json": {
                 "schema": {
@@ -756,7 +790,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Error message explaining the reason for the bad request (e.g., 'File content is required')."
+                      "description": "Error message detailing the bad request (e.g., 'No file uploaded')."
                     }
                   },
                   "required": [
@@ -767,7 +801,7 @@
             }
           },
           "500": {
-            "description": "Internal Server Error. An unexpected error occurred on the server.",
+            "description": "Internal Server Error - An unexpected error occurred on the server during the upload process.",
             "content": {
               "application/json": {
                 "schema": {
@@ -775,7 +809,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Generic error message from the server."
+                      "description": "Generic server error message."
                     }
                   },
                   "required": [

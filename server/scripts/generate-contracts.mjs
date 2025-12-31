@@ -9,8 +9,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { GoogleGenAI } from "@google/genai";
+import { createRequire } from "module";
 
-const GEMINI_API_KEY = "AIzaSyDjPwpbMdwlQWza63AjRIDguOYh65d1Goc";
+const require = createRequire(import.meta.url);
+const { geminiApiKey } = require("../config/env.js");
+const GEMINI_API_KEY = geminiApiKey;
+
+console.log("GEMINI-based Contract Generator", GEMINI_API_KEY);
 
 console.log("Using GEMINI_API_KEY:", GEMINI_API_KEY ? "✅ found" : "❌ missing");
 if (!GEMINI_API_KEY) {
