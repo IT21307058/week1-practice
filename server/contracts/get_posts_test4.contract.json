@@ -1,0 +1,54 @@
+{
+  "id": "testEndpoint4",
+  "method": "get",
+  "path": "/posts/test4",
+  "summary": "Tests endpoint connectivity and basic functionality.",
+  "tags": [
+    "Posts"
+  ],
+  "security": [],
+  "requestBody": null,
+  "responses": {
+    "200": {
+      "description": "Endpoint test successful.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "A success message indicating the endpoint is working."
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the response was generated."
+              }
+            },
+            "required": [
+              "message",
+              "timestamp"
+            ]
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal server error.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Details about the error."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
