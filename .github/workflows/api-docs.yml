@@ -29,12 +29,11 @@ jobs:
 
       - name: Fail if docs are not committed
         run: |
-          missing=0
-
-          [ -d contracts ] || missing=1
-          [ -f docs/swagger.json ] || missing=1
-
-          if [ "$missing" -eq 1 ]; then
-            echo "Required docs files are missing. Run npm run docs:all and commit them."
+          # Check if running docs:all created any NEW files (untracked files)
+          new_files=$(git ls-files --others --exclude-standard contracts/ docs/swagger.json)
+          if [ -n "$new_files" ]; then
+            echo "New contract files were generated but not committed:"
+            echo "$new_files"
+            echo "Run npm run docs:all and commit the new contract files"
             exit 1
           fi
