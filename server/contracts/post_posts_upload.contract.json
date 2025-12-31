@@ -2,7 +2,7 @@
   "id": "uploadPost",
   "method": "post",
   "path": "/posts/upload",
-  "summary": "Upload a new post, including a file and optional metadata.",
+  "summary": "Uploads a new post by attaching a single file.",
   "tags": [
     "Posts"
   ],
@@ -13,25 +13,16 @@
       "multipart/form-data": {
         "schema": {
           "type": "object",
-          "required": [
-            "file"
-          ],
           "properties": {
             "file": {
               "type": "string",
               "format": "binary",
-              "description": "The file to upload for the post. This is handled by `multer.single('file')`."
-            },
-            "title": {
-              "type": "string",
-              "description": "Optional title for the post. (Cannot be inferred as required without controller code).",
-              "maxLength": 255
-            },
-            "description": {
-              "type": "string",
-              "description": "Optional detailed description of the post. (Cannot be inferred as required without controller code)."
+              "description": "The file to upload for the post (e.g., image, video, document)."
             }
-          }
+          },
+          "required": [
+            "file"
+          ]
         }
       }
     }
@@ -44,47 +35,69 @@
           "schema": {
             "type": "object",
             "properties": {
-              "id": {
+              "status": {
                 "type": "string",
-                "format": "uuid",
-                "description": "The unique identifier of the newly created post."
-              },
-              "title": {
-                "type": "string",
-                "description": "The title of the uploaded post (if provided)."
-              },
-              "fileUrl": {
-                "type": "string",
-                "format": "uri",
-                "description": "The URL where the uploaded file can be accessed."
+                "example": "success",
+                "description": "Indicates the status of the operation."
               },
               "message": {
                 "type": "string",
-                "description": "A confirmation message upon successful upload."
+                "example": "File uploaded and post created successfully.",
+                "description": "A descriptive success message."
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "postId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier of the newly created post."
+                  },
+                  "fileUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL to the uploaded file."
+                  },
+                  "uploadedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp when the post was uploaded."
+                  }
+                },
+                "required": [
+                  "postId",
+                  "fileUrl",
+                  "uploadedAt"
+                ]
               }
             },
             "required": [
-              "id",
-              "fileUrl",
-              "message"
+              "status",
+              "message",
+              "data"
             ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request - The request was malformed, or missing the required file.",
+      "description": "Bad Request. This typically occurs if no file is provided or if there's an issue with the file upload.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
               "message": {
                 "type": "string",
-                "description": "Error message detailing the bad request (e.g., 'No file uploaded')."
+                "example": "No file uploaded or invalid request format."
               }
             },
             "required": [
+              "status",
               "message"
             ]
           }
@@ -92,18 +105,23 @@
       }
     },
     "500": {
-      "description": "Internal Server Error - An unexpected error occurred on the server during the upload process.",
+      "description": "Internal Server Error. An unexpected error occurred on the server.",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
             "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
               "message": {
                 "type": "string",
-                "description": "Generic server error message."
+                "example": "An internal server error occurred."
               }
             },
             "required": [
+              "status",
               "message"
             ]
           }

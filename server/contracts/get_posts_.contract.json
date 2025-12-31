@@ -2,7 +2,7 @@
   "id": "getPosts",
   "method": "get",
   "path": "/posts/",
-  "summary": "Retrieve a list of all posts.",
+  "summary": "Retrieve a list of all posts",
   "tags": [
     "Posts"
   ],
@@ -20,7 +20,8 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "description": "Unique identifier of the post."
+                  "format": "uuid",
+                  "description": "Unique identifier for the post."
                 },
                 "title": {
                   "type": "string",
@@ -28,10 +29,11 @@
                 },
                 "content": {
                   "type": "string",
-                  "description": "Full content of the post."
+                  "description": "Body content of the post."
                 },
                 "authorId": {
                   "type": "string",
+                  "format": "uuid",
                   "description": "ID of the user who authored the post."
                 },
                 "createdAt": {
@@ -44,14 +46,22 @@
                   "format": "date-time",
                   "description": "Timestamp when the post was last updated."
                 }
-              }
+              },
+              "required": [
+                "id",
+                "title",
+                "content",
+                "authorId",
+                "createdAt",
+                "updatedAt"
+              ]
             }
           }
         }
       }
     },
     "500": {
-      "description": "Internal server error.",
+      "description": "Internal Server Error",
       "content": {
         "application/json": {
           "schema": {
@@ -59,7 +69,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "An unexpected error occurred."
+                "example": "Something went wrong."
               }
             }
           }

@@ -2,57 +2,15 @@
   "id": "registerUser",
   "method": "post",
   "path": "/auth/register",
-  "summary": "Register a new user account. Note: Request and response schemas are based on common patterns for registration endpoints, as the specific controller code was not provided for inference.",
+  "summary": "Register a new user account",
   "tags": [
     "Authentication"
   ],
   "security": [],
-  "requestBody": {
-    "required": true,
-    "content": {
-      "application/json": {
-        "schema": {
-          "type": "object",
-          "required": [
-            "name",
-            "email",
-            "password",
-            "passwordConfirm"
-          ],
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "User's full name",
-              "example": "John Doe"
-            },
-            "email": {
-              "type": "string",
-              "format": "email",
-              "description": "User's email address (must be unique)",
-              "example": "john.doe@example.com"
-            },
-            "password": {
-              "type": "string",
-              "format": "password",
-              "minLength": 8,
-              "description": "User's password (minimum 8 characters)",
-              "example": "mysecretpassword123"
-            },
-            "passwordConfirm": {
-              "type": "string",
-              "format": "password",
-              "minLength": 8,
-              "description": "Confirm user's password; must match the 'password' field",
-              "example": "mysecretpassword123"
-            }
-          }
-        }
-      }
-    }
-  },
+  "requestBody": null,
   "responses": {
     "201": {
-      "description": "User registered successfully",
+      "description": "User successfully registered and created.",
       "content": {
         "application/json": {
           "schema": {
@@ -64,49 +22,51 @@
               },
               "message": {
                 "type": "string",
-                "example": "User registered successfully"
+                "example": "User registered successfully!"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the user."
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The user's email address."
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Timestamp when the user account was created."
+                  }
+                },
+                "required": [
+                  "id",
+                  "email",
+                  "createdAt"
+                ]
               },
               "token": {
                 "type": "string",
-                "description": "Authentication token for the newly registered user",
-                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZWY1ZjBmMTIzNDU2Nzg5MGFiY2RlZiIsImlhdCI6MTYyNjYzNTc5MCwiZXhwIjoxNjI3MjQwNTkwfQ...."
-              },
-              "data": {
-                "type": "object",
-                "properties": {
-                  "user": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "Unique identifier of the registered user",
-                        "example": "60ef5f0f1234567890abcdef"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "John Doe"
-                      },
-                      "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "john.doe@example.com"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2023-10-27T10:00:00.000Z"
-                      }
-                    }
-                  }
-                }
+                "description": "JWT authentication token for the newly registered user.",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsImlhdCI6MTY3ODkwNTYwMCwiZXhwIjoxNjc4OTE2NDAwfQ.S0mejwtTokenString"
               }
-            }
+            },
+            "required": [
+              "status",
+              "message",
+              "user",
+              "token"
+            ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad request due to invalid input, missing fields, or email already in use",
+      "description": "Invalid input data or missing required fields.",
       "content": {
         "application/json": {
           "schema": {
@@ -114,29 +74,41 @@
             "properties": {
               "status": {
                 "type": "string",
-                "example": "fail"
+                "example": "error"
               },
               "message": {
                 "type": "string",
-                "example": "Email address is already registered."
-              },
-              "errors": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "field": {
-                      "type": "string",
-                      "example": "passwordConfirm"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Passwords do not match."
-                    }
-                  }
-                }
+                "example": "Validation failed: Email is required."
               }
-            }
+            },
+            "required": [
+              "status",
+              "message"
+            ]
+          }
+        }
+      }
+    },
+    "409": {
+      "description": "User with given email or username already exists.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "message": {
+                "type": "string",
+                "example": "User with this email already exists."
+              }
+            },
+            "required": [
+              "status",
+              "message"
+            ]
           }
         }
       }

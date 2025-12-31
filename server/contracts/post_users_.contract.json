@@ -2,12 +2,46 @@
   "id": "createNewUser",
   "method": "post",
   "path": "/users/",
-  "summary": "Create a new user",
+  "summary": "Create a new user account",
   "tags": [
     "Users"
   ],
   "security": [],
-  "requestBody": null,
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": [
+            "username",
+            "email",
+            "password"
+          ],
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "A unique username for the new user.",
+              "example": "john_doe"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "A unique email address for the new user.",
+              "example": "john.doe@example.com"
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "minLength": 8,
+              "description": "The password for the new user. Must be at least 8 characters long.",
+              "example": "StrongP@ssw0rd!"
+            }
+          }
+        }
+      }
+    }
+  },
   "responses": {
     "201": {
       "description": "User created successfully",
@@ -22,50 +56,25 @@
               },
               "message": {
                 "type": "string",
-                "example": "User created successfully"
+                "example": "User account created successfully."
               },
-              "user": {
+              "data": {
                 "type": "object",
                 "properties": {
-                  "id": {
+                  "userId": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "Unique identifier of the user"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "Full name of the user"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email address of the user"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "Timestamp of user creation"
+                    "description": "The unique identifier of the newly created user."
                   }
-                },
-                "required": [
-                  "id",
-                  "name",
-                  "email",
-                  "createdAt"
-                ]
+                }
               }
-            },
-            "required": [
-              "status",
-              "message",
-              "user"
-            ]
+            }
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request - Invalid input provided",
+      "description": "Invalid input or missing required fields",
       "content": {
         "application/json": {
           "schema": {
@@ -73,17 +82,53 @@
             "properties": {
               "status": {
                 "type": "string",
-                "example": "fail"
+                "example": "error"
               },
               "message": {
                 "type": "string",
-                "example": "Invalid data provided (e.g., email missing or invalid format)"
+                "example": "Missing required fields: username, email, password."
               }
-            },
-            "required": [
-              "status",
-              "message"
-            ]
+            }
+          }
+        }
+      }
+    },
+    "409": {
+      "description": "Conflict, e.g., username or email already exists",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "message": {
+                "type": "string",
+                "example": "A user with this email or username already exists."
+              }
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal server error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "message": {
+                "type": "string",
+                "example": "An unexpected error occurred."
+              }
+            }
           }
         }
       }

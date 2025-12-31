@@ -2,9 +2,9 @@
   "id": "login",
   "method": "post",
   "path": "/auth/login",
-  "summary": "Log in an existing user and receive an authentication token.",
+  "summary": "Authenticate a user and generate an access token.",
   "tags": [
-    "Authentication"
+    "Auth"
   ],
   "security": [],
   "requestBody": {
@@ -26,13 +26,8 @@
             "password": {
               "type": "string",
               "format": "password",
-              "minLength": 6,
               "description": "The user's password."
             }
-          },
-          "example": {
-            "email": "user@example.com",
-            "password": "Password123"
           }
         }
       }
@@ -40,7 +35,7 @@
   },
   "responses": {
     "200": {
-      "description": "User logged in successfully.",
+      "description": "Login successful. Returns an authentication token and user information.",
       "content": {
         "application/json": {
           "schema": {
@@ -48,46 +43,39 @@
             "properties": {
               "token": {
                 "type": "string",
-                "description": "A JWT (JSON Web Token) for authenticating subsequent requests."
+                "description": "The JWT authentication token for subsequent requests."
               },
               "user": {
                 "type": "object",
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "The ID of the logged-in user."
+                    "description": "The user's unique identifier."
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "The email of the logged-in user."
+                    "description": "The user's email address."
                   },
                   "name": {
                     "type": "string",
-                    "description": "The name of the logged-in user (if available)."
+                    "nullable": true,
+                    "description": "The user's name, if available."
                   }
                 },
-                "example": {
-                  "id": "60d0fe4f5ae121000f089f2a",
-                  "email": "user@example.com",
-                  "name": "John Doe"
-                }
+                "description": "Basic information about the logged-in user."
               }
             },
-            "example": {
-              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDBmZTRmNWFlMTIxMDAwZjA4OWYyYSIsImlhdCI6MTYyNDEwMjM2NywiZXhwIjoxNjI0MTA1OTY3fQ.signature_here",
-              "user": {
-                "id": "60d0fe4f5ae121000f089f2a",
-                "email": "user@example.com",
-                "name": "John Doe"
-              }
-            }
+            "required": [
+              "token",
+              "user"
+            ]
           }
         }
       }
     },
     "400": {
-      "description": "Bad Request - Missing required fields or invalid input format.",
+      "description": "Bad Request. Missing required fields or invalid input format.",
       "content": {
         "application/json": {
           "schema": {
@@ -95,15 +83,18 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Email is required"
+                "example": "Email and password are required."
               }
-            }
+            },
+            "required": [
+              "message"
+            ]
           }
         }
       }
     },
     "401": {
-      "description": "Unauthorized - Invalid email or password.",
+      "description": "Unauthorized. Invalid credentials provided (e.g., incorrect email or password).",
       "content": {
         "application/json": {
           "schema": {
@@ -111,9 +102,12 @@
             "properties": {
               "message": {
                 "type": "string",
-                "example": "Invalid email or password"
+                "example": "Invalid email or password."
               }
-            }
+            },
+            "required": [
+              "message"
+            ]
           }
         }
       }
